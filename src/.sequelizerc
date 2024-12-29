@@ -1,0 +1,5 @@
+{
+  "config": "src/config/config.ts",  
+  "models-path": "src/models",       
+  "migrations-path": "src/migrations" 
+}
