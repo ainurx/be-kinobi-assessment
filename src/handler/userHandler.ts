@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { Transaction } from 'sequelize'
 
 import sequelize from '../common/database'
-import { emptyThrowError, notEmptyThrowError } from '../common/check'
+import { emptyThrowError, notEmptyThrowError, trueThrowError } from '../common/check'
 import { comparePassword, generateToken, hashPassword } from '../common/util'
 import { responseSuccess, responseError} from '../common/response'
 import userService from '../service/userService'
@@ -13,6 +13,10 @@ const signup = async(req: Request, res: Response):Promise<any>=>{
         const { name, username, password } = req.body 
 
         const result = await sequelize.transaction(async(transaction)=>{
+            trueThrowError(name.length < 4, 'Name min. 4 character')
+            trueThrowError(username.length < 4, 'Username min. 4 character')
+            trueThrowError(password.length < 4, 'Password min. 4 character')
+
             const existingUser = await userService.findOneByParams({ username }, transaction)
 
             notEmptyThrowError(existingUser, 'User already exist')
@@ -41,15 +45,16 @@ const signin = async(req: Request, res: Response):Promise<any>=>{
         const { username, password } = req.body
 
         const result = await sequelize.transaction(async(transaction: Transaction)=>{
+            emptyThrowError(username, 'Username is required')
+            emptyThrowError(password, 'Password is required')
+
             const user = await userService.findOneByParams({username}, transaction)
 
             emptyThrowError(user, 'Invalid username / password')
 
             const userData = user as TUser;
 
-            if(!comparePassword(password, userData.password)){
-                throw new Error('Invalid username / password')
-            }
+            trueThrowError(!comparePassword(password, userData.password), 'Invalid username / password')
             
             const token = generateToken(user as TUser)
 

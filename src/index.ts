@@ -12,7 +12,7 @@ app.use(json())
 
 app.get('/', (req: Request, res: Response)=>{
     res.send('<h3>Kinobi assessment API</h3>')
-})
+})  
 
 app.use('/api', router)
 

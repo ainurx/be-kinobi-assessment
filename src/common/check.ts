@@ -5,7 +5,7 @@ export const emptyThrowError = (params: any, message: string):any => {
         throw new Error(message)
     } else if (Array.isArray(params) && params.length === 0) {
         throw new Error(message)
-    } else if (params === null) {
+    } else if (params === null || params === undefined) {
         throw new Error(message)
     } else {
 
@@ -27,5 +27,12 @@ export const notEmptyThrowError = (params: any, message: string):any => {
 
     }
     return 
+}
 
+export const trueThrowError = (params: any, message: string): any =>{
+    if(params){
+        throw new Error(message)
+    }
+
+    return 
 }

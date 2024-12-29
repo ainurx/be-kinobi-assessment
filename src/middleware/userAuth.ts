@@ -14,7 +14,6 @@ const validateToken = async(req: Request, res: Response, next: NextFunction):Pro
             throw new Error('Token is required and must be a string');
         }
 
-        console.log(token)
         const decoded = jwt.verify(token, secretKey)
         const user = decoded as TUser
 

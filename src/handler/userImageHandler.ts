@@ -13,6 +13,7 @@ const uploadImage = async(req: Request, res: Response):Promise<any>=>{
         const { image } = req.body
 
         const result = await sequelize.transaction(async(transaction: Transaction)=>{
+            emptyThrowError(image, 'Image is required')
             const newImage = await userImageService.create({userId: Number(userId), image: String(image)}, transaction)
 
             return newImage.toJSON()
