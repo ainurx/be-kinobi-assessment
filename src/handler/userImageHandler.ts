@@ -12,13 +12,13 @@ const uploadImage = async(req: Request, res: Response):Promise<any>=>{
         const { userId } = req.params
         const { image } = req.body
 
-        await sequelize.transaction(async(transaction: Transaction)=>{
-            await userImageService.create({userId: Number(userId), image}, transaction)
+        const result = await sequelize.transaction(async(transaction: Transaction)=>{
+            const newImage = await userImageService.create({userId: Number(userId), image: String(image)}, transaction)
 
-            return 
+            return newImage.toJSON()
         })
 
-        return responseSuccess(res, {image})
+        return responseSuccess(res, result)
     } catch(err){
         return responseError(res, err)
     }

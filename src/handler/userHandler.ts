@@ -56,7 +56,7 @@ const signin = async(req: Request, res: Response):Promise<any>=>{
             return token
         })
 
-        return responseSuccess(res, {message: 'signin', result})
+        return responseSuccess(res, { token: result })
     } catch(err){
         return responseError(res, err)
     }
