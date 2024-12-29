@@ -8,12 +8,15 @@ import { S3Client } from "@aws-sdk/client-s3";
 import 'dotenv/config'
 
 import { TUser } from '../types/type';
-import { trueThrowError } from './check'
 
 const awsBucketName = process.env.AWS_BUCKET_NAME as string
 const awsBucketRegion = process.env.AWS_BUCKET_REGION as string
 const awsAccessKey = process.env.AWS_ACCESS_KEY_ID as string
 const awsSecretKey = process.env.AWS_SECRET_ACCESS_KEY as string
+
+export const getOffset = (page: number) =>{
+    return (page * 5) - 5
+}
 
 export const hashPassword = (password: string):string =>{
     const salt = bcrypt.genSaltSync(10)

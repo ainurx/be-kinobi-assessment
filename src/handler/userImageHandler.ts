@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { Transaction } from "sequelize"
 
 import sequelize from "../common/database"
+import { getOffset } from '../common/util'
 import { responseSuccess, responseError } from "../common/response"
 import { emptyThrowError } from "../common/check"
 import userService from "../service/userService"
@@ -28,13 +29,16 @@ const uploadImage = async(req: Request, res: Response):Promise<any>=>{
 const findUserImages = async(req: Request, res: Response):Promise<any>=>{
     try{
         const { userId } = req.params
+        const { pageNo } = req.query
+
         const numUserId: number = Number(userId)
+        const numPageNo: number = Number(pageNo)
 
         const result = await sequelize.transaction(async(transaction: Transaction)=>{
             const user = await userService.findById(numUserId, transaction)
             emptyThrowError(user, "User does not exist")
 
-            const userImages = await userImageService.findPaginated({userId: numUserId}, transaction)
+            const userImages = await userImageService.findPaginated({userId: numUserId}, getOffset(numPageNo), transaction)
 
             return userImages
         })

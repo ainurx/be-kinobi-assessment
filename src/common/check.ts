@@ -7,11 +7,9 @@ export const emptyThrowError = (params: any, message: string):any => {
         throw new Error(message)
     } else if (params === null || params === undefined) {
         throw new Error(message)
-    } else {
-
-    }
+    } 
+    
     return 
-
 }
 
 export const notEmptyThrowError = (params: any, message: string):any => {

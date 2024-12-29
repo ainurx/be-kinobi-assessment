@@ -6,13 +6,13 @@ import { TUserImage } from '../types/type'
 const create = (params: Omit<TUserImage, 'id'>, transaction: Transaction):Promise<UserImage> => 
     UserImage.create(params, { transaction })
 
-const findPaginated = (params: Partial<TUserImage>, transaction: Transaction) => UserImage.findAndCountAll({
+const findPaginated = (params: Partial<TUserImage>, offset: number = 0, transaction: Transaction) => UserImage.findAndCountAll({
     where: {...params},
     order: [
         ['id', 'DESC']
     ],
     limit: 5,
-    offset: 0, 
+    offset, 
     transaction
 })
 

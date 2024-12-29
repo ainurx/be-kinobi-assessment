@@ -4,24 +4,23 @@ import 'dotenv/config'
 
 import { TUser } from '../types/type'
 import { responseError } from '../common/response'
+import { trueThrowError } from '../common/check'
 
 const validateToken = async(req: Request, res: Response, next: NextFunction):Promise<any>=>{
     try{
         const secretKey = process.env.SECRET_KEY as string
         const token = req.headers['token']
 
-        if (!token || typeof token !== 'string') {
-            throw new Error('Token is required and must be a string');
-        }
+        trueThrowError(!token || typeof token !== 'string', 'Token is required')
 
-        const decoded = jwt.verify(token, secretKey)
+        const decoded = jwt.verify(token as string, secretKey)
         const user = decoded as TUser
 
         req.params.userId = String(user.id)
         
         next()
     } catch(err){
-        return responseError(res, err)
+        return responseError(res, err, 401)
     }
 }
 
