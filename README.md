@@ -18,6 +18,9 @@ $ npx sequelize-cli db:migrate
 # serve with hot reload at localhost:5050
 $ npm run dev
 
+# Build and run 
+$ npm run build
+$ npm run start
 
 ```
 
